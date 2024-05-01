@@ -1,0 +1,4 @@
+baseURL: "https://happy-dev-life.github.io/"
+languageCode: "ko-kr"
+title: "My Hugo Site"
+theme: "ananke"

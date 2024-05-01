@@ -47,11 +47,7 @@ jobs:
           node-version: '20'
 
       - name: Install PostCSS and TailwindCSS
-        run: |
-          npm install -g postcss-cli
-          npm install -g autoprefixer
-          npm install -g @vue/cli
-          vue add tailwind
+        run: npm install
 
       - name: Checkout
         uses: actions/checkout@v4

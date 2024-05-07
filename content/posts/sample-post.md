@@ -2,7 +2,7 @@
 author: "hdl"
 title: "EMS Compact WIKI For Beginners"
 image: ""
-draft: true
+draft: false
 date: 2024-05-07
 description: "EMS Compact WIKI For Beginners"
 tags: ["document"]

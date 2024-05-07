@@ -1,16 +1,13 @@
 ---
 author: "hdl"
-title: "Sample Post Test"
+title: "EMS Compact WIKI For Beginners"
 image: ""
-draft: false
+draft: true
 date: 2024-05-07
-description: "Sample Post Test"
-tags: ["doc"]
+description: "EMS Compact WIKI For Beginners"
+tags: ["document"]
 archives: ["2024/05"]
 ---
-
-
-some markdown documents
 
 # EMS Compact WIKI For Beginners
 
@@ -22,11 +19,11 @@ some markdown documents
 
 - EMS는 무엇입니까?
 
-EMS는 eLink 솔루션 패키지의 한 프로젝트로, 온라인 거래 엔진 및 배치와 일괄 거래 엔진의 서비스 설정과 실시간 거래를 모니터링하는 툴입니다. 관리자 및 사용자는 EMS에서 제공되는 화면을 통해 거래 서비스를 구축하고 설정하며, 화면을 통해 모니터링 할 수 있습니다.
+> EMS는 eLink 솔루션 패키지의 한 프로젝트로, 온라인 거래 엔진 및 배치와 일괄 거래 엔진의 서비스 설정과 실시간 거래를 모니터링하는 툴입니다. 관리자 및 사용자는 EMS에서 제공되는 화면을 통해 거래 서비스를 구축하고 설정하며, 화면을 통해 모니터링 할 수 있습니다.
 
 - Main Concepts and Terminology
 
-EMS의 화면과 기능을 이해하기 위해서는, 거래 서비스에 대한 이해가 전제로 필요합니다. 다음은 
+> EMS의 화면과 기능을 이해하기 위해서는, 거래 서비스에 대한 이해가 전제로 필요합니다. 다음은 
 
   - 역할 분리를 통해 역할별 사용자의 화면권한 분리
   - APP Code 권한관리를 통해 사용자 계정별 자원권한 분리
@@ -52,43 +49,81 @@ EMS의 화면과 기능을 이해하기 위해서는, 거래 서비스에 대한
 
 ### 3.1 Configuration
 
-### 3.2 Filters
+- web.xml
+- context.xml
+- applicationContext.xml
+- applicationContext-datasource-xxx.xml
+- applicationContext-jdbc-xxx.xml
+- applicationContext-jpa.xml
+- applicationContext-schedule.xml
+- applicationContext-udpip.xml
+- springapp-servlet.xml
 
-### 3.3 Interceptors
+### 3.2 Log
+- logback.xml
 
-### 3.4 AOP
+### 3.3 Filter
+- 
 
-### 3.5 RoutingDatasource
+### 3.4 AppInitializer
 
-### 3.6 iBatis
+### 3.5 Interceptor
 
-### 3.7 JPA
+### 3.6 AOP
 
-### 3.8 Scheduler
+### 3.7 iBatis
 
-### 3.9 
+### 3.8 JPA
+
+### 3.9 Scheduler
+
+### 3.9 Excel Download
+
+### 3.10 Resource Deploy
 
 ## 4. User Interfaces
 
 ### 4.1 Common Scripts script.js, css
 
-### 4.2 View Controller 동작 원리와 Menu 권한분리를 위한 설계
+### 4.2 LocaleMessage
 
-## Operations
+### 4.3 View Controller 동작 원리와 Menu 권한분리를 위한 설계
 
-### AgentUtilService, CommonCommand WebAgent Servlet
+### 4.4 jExcel
 
-## Security
+### 4.5 jqGrid
 
-### Seed.java
+### 4.6 fetch API & download
+
+## 5. Operations
+
+### 5.1 Command Class In Engine Project
+
+### 5.2 AgentUtilService 
+
+TSEAISY02
+
+### 5.3 WebAgent Servlet
+
+## 6.1 Security
+
+### 6.2 Seed.java
 
 enc, dec
 
-## Monitoring
+## 7. Monitoring
 
-### emsClient와
+### Bean ioAcceptor UDP 10800
+
+### emsClient
+
+### Configuration in Engine Program
 
 ## ETC
+
+### Testing
+
+### 
 
 SSL지원?
 

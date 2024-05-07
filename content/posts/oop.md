@@ -4,8 +4,8 @@ title: "OOP의 정수를 찾아서..."
 image: ""
 draft: true
 date: 2024-05-07
-description: "EMS Compact WIKI For Beginners"
-tags: ["document"]
+description: "oop draft"
+tags: ["oop"]
 archives: ["2024/05"]
 ---
 
@@ -22,8 +22,19 @@ OOP란 뭔데 그래서 처음부터
 
 그래서 무엇에 중점을 두어야 하는가?
 
+성능, 가독성, 유지보수성
 
 And How? OOP 전략 소개
+
+
+UI (View)
+자료 (Data)
+
+... 이제 Config(Prop), Service(Business), Data Access ... layer 구분 
+
+예전의 JSP코드?? View 하나에 비즈니스로직, 데이터액세스, 파싱 뭐 등등등 다 들어가 있었다.. 
+
+결국 직관적으로 파악하기 쉽고 유지보수성이 용이하며 구성원과의 추가커뮤니케이션 없이 쉽게 식별할 수 있는.. (말이 반복되나?) 그러면서 성능이 나오고 ..
 
 
 배운사람들은 어떻게 하나? 라이브러리 까보기

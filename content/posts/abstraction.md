@@ -1,6 +1,6 @@
 ---
 author: "seonuk1218"
-title: "추상화 공부라 쓰고 오픈소스 공부라 읽는다"
+title: "Title"
 image: ""
 draft: false
 date: 2024-09-24

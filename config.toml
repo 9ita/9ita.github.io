@@ -4,7 +4,7 @@ author = "seonuk1218"
 languageCode = "ko-kr"
 DefaultContentLanguage = "ko-kr"
 enableInlineShortcodes = true
-theme = "Blonde"
+theme = "hugo-theme-learn-master"
 enableRobotsTXT = true
 
 # Please enable this feature if the site is available in Japanese, Chinese or Korean.

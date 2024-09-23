@@ -3,7 +3,7 @@ author: "seonuk1218"
 title: "Title"
 image: ""
 draft: false
-date: 2024-09-24
+date: 2024-09-20
 description: "abstraction"
 tags: ["abstraction"]
 archives: ["2024/09"]

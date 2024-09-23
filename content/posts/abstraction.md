@@ -1,5 +1,5 @@
 ---
-author: "seonuk"
+author: "seonuk1218"
 title: "추상화 공부라 쓰고 오픈소스 공부라 읽는다"
 image: ""
 draft: false

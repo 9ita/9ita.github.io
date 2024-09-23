@@ -1,3 +1,15 @@
+---
+author: "seonuk1218"
+title: "BDD Test"
+image: ""
+draft: false
+date: 2024-05-07
+description: ""
+tags: ["testing", "bdd"]
+archives: ["2024/05"]
+---
+
+
 BDD 와 CI script, build Script
 
 

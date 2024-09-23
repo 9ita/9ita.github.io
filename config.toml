@@ -1,6 +1,6 @@
-baseURL = "https://happy-dev-life.github.io/"
-title = "Blonde"
-author = "hdl"
+baseURL = "https://seonuk1218.github.io/"
+title = "finding a smoother pebble"
+author = "seonuk1218"
 languageCode = "ko-kr"
 DefaultContentLanguage = "ko-kr"
 enableInlineShortcodes = true

@@ -24,6 +24,7 @@ example ) 무언가 기술 Post의 글에는 그 개념에 대한 개요. 왜 �
 |not|excel지원|
 
 # Post
+- https://www.youtube.com/watch?v=TDG2syZHrpI 
 - https://lts0606.tistory.com/category/%EC%97%98%EB%9D%BC%EC%8A%A4%ED%8B%B1%EC%84%9C%EC%B9%98%28Elasticsearch%29
 - Java Package 러닝, 오픈소스 러닝
 - [IntelliJ Class Diagram](https://velog.io/@maigumi/IntelliJ-%EA%B0%9C%EA%BF%80%EA%B8%B0%EB%8A%A5-1-%ED%81%B4%EB%9E%98%EC%8A%A4-%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8-%EA%B7%B8%EB%A6%AC%EA%B8%B0)

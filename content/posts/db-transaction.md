@@ -137,3 +137,102 @@ SQL 표준에서는 **트랜잭션 격리 수준**을 통해 트랜잭션 간의
 - 쿼리가 실행되고 있는 동안 **다른 트랜잭션이 해당 테이블의 데이터에 대해 수정(UPDATE) 또는 삽입(INSERT)**을 시도하면, **락**이 걸리기 때문에 접근이 제한될 수 있습니다.
 - 즉, 해당 트랜잭션이 읽고 있는 데이터는 다른 트랜잭션이 **수정하거나 삭제할 수 없으며**, 새로운 데이터를 삽입하려고 해도 차단될 수 있습니다.
 - 그러나 테이블 전체에 대한 락이 걸리는 것은 아니고, **해당 트랜잭션이 접근하는 데이터 범위**(조건에 맞는 행들)에 대해서만 락이 발생합니다.
+
+### 모던 트랜잭션 관리: Redis 분산락과 Kafka 기반 SAGA 패턴을 활용한 효율적 트랜잭션 관리
+
+현대의 분산 시스템에서는 데이터 일관성을 유지하면서도 성능을 최적화하기 위해 다양한 **트랜잭션 관리 기술**이 필요합니다. 전통적인 **ACID 트랜잭션**은 단일 데이터베이스에서의 일관성을 보장하지만, **마이크로서비스 아키텍처**나 **분산 시스템**에서는 이를 적용하는 것이 복잡해질 수 있습니다. 이때, **Redis 분산락**과 **Kafka 기반 SAGA 패턴**과 같은 기술을 통해 **애플리케이션 레이어에서 효율적인 트랜잭션 관리**가 가능해집니다.
+
+---
+
+### 1. **Redis 분산락 (Distributed Lock)**
+
+**Redis 분산락**은 **분산 환경**에서 리소스를 안전하게 관리하기 위한 **락 메커니즘**입니다. 여러 인스턴스가 동시에 동일한 리소스에 접근하려 할 때, **데이터 일관성**을 유지하기 위해 **동시성 제어**가 필요합니다. Redis는 가볍고 빠른 인메모리 데이터 스토리지로, 이를 활용하여 **분산 락**을 관리할 수 있습니다.
+
+#### a. **Redis 분산락의 기본 원리**
+- **SETNX (Set if Not Exists)**: Redis의 `SETNX` 명령어는 **키가 존재하지 않을 때**에만 값을 설정하는 명령입니다. 이를 사용하여 락을 얻을 수 있습니다.
+- **Expire Time (TTL)**: 락이 걸린 상태가 무한정 지속되지 않도록, 락에 **TTL(Time-to-Live)**을 설정하여 락을 자동으로 해제합니다.
+- **락 해제**: 락을 점유한 프로세스가 작업을 완료하면, Redis에서 해당 락을 **해제**하여 다른 프로세스가 리소스를 사용할 수 있도록 합니다.
+
+#### b. **Redis 분산락 구현 예시**
+다음은 Redis를 활용한 **분산락**의 간단한 구현입니다.
+
+```java
+// RedisTemplate를 사용한 분산락 구현 예시
+public boolean acquireLock(RedisTemplate<String, String> redisTemplate, String lockKey, String lockValue, long expireTime) {
+    // SETNX 명령어로 락 설정
+    Boolean success = redisTemplate.opsForValue().setIfAbsent(lockKey, lockValue, expireTime, TimeUnit.SECONDS);
+    return Boolean.TRUE.equals(success);  // 락 획득 여부 반환
+}
+
+public void releaseLock(RedisTemplate<String, String> redisTemplate, String lockKey, String lockValue) {
+    // 락을 해제할 때, 락이 자신이 설정한 것인지 확인 후 해제
+    String currentValue = redisTemplate.opsForValue().get(lockKey);
+    if (lockValue.equals(currentValue)) {
+        redisTemplate.delete(lockKey);
+    }
+}
+```
+
+#### c. **Redis 분산락의 장점**
+- **빠르고 가벼움**: Redis는 **인메모리 데이터베이스**로, 락을 빠르게 획득하고 해제할 수 있습니다.
+- **분산 환경 지원**: 여러 애플리케이션 인스턴스에서 Redis를 사용해 **동시성 제어**를 손쉽게 관리할 수 있습니다.
+- **TTL 설정**: 락을 오래 점유하는 상황을 방지하기 위해 **TTL**을 설정하여 자동으로 해제되는 기능을 지원합니다.
+
+#### d. **Redis 분산락의 한계**
+- Redis 분산락은 **강력한 일관성**을 제공하지 않기 때문에, 락 해제의 **경쟁 상태**가 발생할 수 있습니다. 이를 해결하기 위해 Redis에서는 **Redlock 알고리즘**과 같은 **복잡한 분산락 구현**이 필요할 수 있습니다.
+  
+---
+
+### 2. **Kafka를 활용한 SAGA 패턴**
+
+**SAGA 패턴**은 **분산 트랜잭션**을 관리하기 위한 **트랜잭션 관리 패턴**으로, **각 서비스별로 로컬 트랜잭션을 실행**하고 **복구 절차(보상 트랜잭션)**를 통해 전체 시스템의 일관성을 유지합니다. **Kafka**와 같은 메시징 시스템을 활용하면 **SAGA 패턴**을 더욱 효율적으로 관리할 수 있습니다.
+
+#### a. **SAGA 패턴의 두 가지 유형**
+1. **Choreography**: 각 서비스가 **자율적으로** 트랜잭션을 처리하고, 다음 단계의 트랜잭션을 **이벤트**로 트리거합니다. **Kafka**를 활용한 **이벤트 기반 트랜잭션 관리**에 적합합니다.
+   
+2. **Orchestration**: 중앙 **SAGA 코디네이터**가 모든 트랜잭션 단계를 관리하며, 실패 시 보상 작업을 수행합니다. **중앙화된 제어**를 필요로 하는 경우 사용됩니다.
+
+#### b. **Kafka를 활용한 SAGA Choreography 패턴**
+Kafka는 **이벤트 스트리밍** 시스템으로, 각 서비스 간의 **이벤트 전달**을 통해 **트랜잭션**을 관리할 수 있습니다. 각 서비스는 Kafka의 **토픽**을 통해 다음 트랜잭션 단계를 트리거하고, 각 단계에서 로컬 트랜잭션을 처리합니다.
+
+##### **SAGA Choreography 패턴 예시** (Kafka 활용):
+1. **주문 서비스**가 주문을 생성하고, Kafka에 `OrderCreated` 이벤트를 발행합니다.
+2. **재고 서비스**가 `OrderCreated` 이벤트를 소비하고, 재고를 차감한 후 Kafka에 `StockReserved` 이벤트를 발행합니다.
+3. **결제 서비스**가 `StockReserved` 이벤트를 소비하고 결제를 처리한 후 `PaymentProcessed` 이벤트를 발행합니다.
+4. 모든 트랜잭션이 성공적으로 완료되면 주문이 완료됩니다.
+
+만약 어느 단계에서 오류가 발생하면, Kafka를 통해 **보상 트랜잭션**을 실행하여 시스템 상태를 롤백합니다.
+
+```java
+// Kafka Consumer 예시: 주문 서비스
+@KafkaListener(topics = "OrderCreated", groupId = "saga-group")
+public void handleOrderCreated(OrderCreatedEvent event) {
+    try {
+        // 로컬 트랜잭션 수행: 재고 차감
+        inventoryService.reserveStock(event.getOrderId());
+
+        // 성공 시 다음 이벤트 발행
+        kafkaTemplate.send("StockReserved", new StockReservedEvent(event.getOrderId()));
+    } catch (Exception e) {
+        // 실패 시 보상 트랜잭션 수행
+        kafkaTemplate.send("OrderCompensation", new OrderCompensationEvent(event.getOrderId()));
+    }
+}
+```
+
+#### c. **Kafka 기반 SAGA 패턴의 장점**
+- **이벤트 기반 아키텍처**: Kafka의 **이벤트 스트리밍** 기능을 통해 각 서비스 간의 트랜잭션을 **비동기적으로** 처리할 수 있습니다.
+- **확장성**: Kafka는 고성능의 **메시지 처리**를 지원하므로, 많은 트랜잭션을 처리하는 분산 시스템에 적합합니다.
+- **복구 절차 관리**: 트랜잭션 실패 시 보상 트랜잭션을 Kafka 이벤트로 쉽게 관리할 수 있습니다.
+
+#### d. **Kafka 기반 SAGA 패턴의 단점**
+- **복잡성 증가**: 각 트랜잭션 단계별로 이벤트를 주고받아야 하므로, **비즈니스 로직이 복잡**해질 수 있습니다.
+- **보상 트랜잭션의 설계**: 실패 시 어떻게 **보상 트랜잭션**을 처리할지 명확히 설계해야 하며, 이로 인해 관리가 복잡해질 수 있습니다.
+
+---
+
+### 결론: Redis 분산락과 Kafka 기반 SAGA 패턴의 활용
+
+1. **Redis 분산락**은 분산 시스템에서 **동시성 제어**를 관리하는 데 유용하며, Redis의 빠른 인메모리 특성을 활용하여 **리소스 잠금**을 효과적으로 처리할 수 있습니다. 분산 환경에서 **경쟁 상태**를 방지하고, 자원을 안전하게 관리할 수 있습니다.
+   
+2. **Kafka 기반 SAGA 패턴**은 **분산 트랜잭션**을 관리하는 강력한 패턴으로, **마이크로서비스 아키텍처**에서 서비스 간 트랜잭션을 비동기적으로 연결하고, Kafka의 메시징 기능을 통해 **확장성**과 **내결함성**을 제공할 수 있습니다. 각 서비스의 로컬 트랜잭션을 독립적으로 처리하면서, 전체적으로 **데이터 일관성**을 보장할 수 있습니다.

@@ -1,6 +1,6 @@
 # 결론??
 
-- Quartz + SpringBatch + SpringIntegration + 고급 설정 지원
+- Quartz + Spring Cloud data flow ? (예제구성해보면서 확인 할 것) + SpringBatch + SpringIntegration + 고급 설정 지원
 - Prototype (repository dir)
 - Spring Batch Doc()
 - Spring Integration Doc(https://docs.spring.io/spring-integration/reference/index.html)

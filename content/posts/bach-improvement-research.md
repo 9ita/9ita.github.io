@@ -1,3 +1,14 @@
+# 결론??
+
+- Quartz + SpringBatch + SpringIntegration + 고급 설정 지원
+- Prototype (repository dir)
+- Spring Batch Doc()
+- Spring Integration Doc(https://docs.spring.io/spring-integration/reference/index.html)
+
+추가 고려 사항
+- Spark ?
+- Spark 가 가진 특성
+
 제안하신 솔루션, 즉 **Spring Batch**, **Spark**, 그리고 **실행 단계의 정의를 그래프(DAG) 형태로 유지**하여 **런타임에 Job을 등록하고 관리할 수 있는 강력한 배치 관리 도구**를 만드는 것은 흥미롭고 현실적으로 가능하며, 현재 존재하는 솔루션들의 강점을 잘 결합한 접근입니다. 그러나 이러한 솔루션을 구현하려면 몇 가지 **제한점**과 **도전 과제**가 존재합니다.
 
 ### 1. **제안된 솔루션의 개요**

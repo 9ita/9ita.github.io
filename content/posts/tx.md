@@ -20,6 +20,8 @@ https://docs.spring.io/spring-framework/reference/data-access/transaction/motiva
 ### 2PL
 https://m.blog.naver.com/sdug12051205/221575076036
 
+## 분산트랜잭션 XA 표준의 등장
+
 ### JTA
 https://devssul.tistory.com/m/33
 
